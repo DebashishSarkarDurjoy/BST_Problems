@@ -78,20 +78,20 @@ int main(void) {
     int arr[] = {3,7,1,4,9,2,5,6,8};
     vector<int> nums = {1,2,3,4,5,6,7};
 
-    // for (int num: arr) {
-    //     root = insertNode(root, num);
-    // }
-    //
-    // printBST(root);
-    // cout << endl;
+    for (int num: arr) {
+        root = insertNode(root, num);
+    }
 
-    // if (search(root, 60)) {
-    //     cout << "Present";
-    // }
-    // else {
-    //     cout << "Not present";
-    // }
-    // cout << endl;
+    printBST(root);
+    cout << endl;
+
+    if (search(root, 60)) {
+        cout << "Present";
+    }
+    else {
+        cout << "Not present";
+    }
+    cout << endl;
 
     root = minHeight(nums, 0, nums.size()-1);
     printBST(root);
