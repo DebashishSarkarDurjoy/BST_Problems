@@ -36,6 +36,27 @@ Node* insertNode(Node* root, int num) {
     return root;
 }
 
+bool search(Node* root, int num) {
+    if (root == NULL) {
+        return false;
+    }
+
+    if (root->data == num) {
+        return true;
+    }
+
+    bool isPresent = false;
+    if (num < root->data) {
+        isPresent = search(root->left, num);
+    }
+    else {
+        isPresent = search(root->right, num);
+    }
+
+    return isPresent;
+
+}
+
 int main(void) {
     Node* root = NULL;
     int arr[] = {3,7,1,4,9,2,5,6,8};
@@ -45,6 +66,14 @@ int main(void) {
     }
 
     printBST(root);
+    cout << endl;
+
+    if (search(root, 60)) {
+        cout << "Present";
+    }
+    else {
+        cout << "Not present";
+    }
     cout << endl;
 
 
