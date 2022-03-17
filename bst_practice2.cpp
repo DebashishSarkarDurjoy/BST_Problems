@@ -104,17 +104,69 @@ int closest(Node* root, int target) {
     return closest;
 }
 
+class Pair {
+public:
+    Node* head;
+    Node* tail;
+};
+
+Pair bst2ll(Node* root) {
+    Pair newPair;
+
+    if (root == NULL) {
+        newPair.head = NULL;
+        newPair.tail = NULL;
+        return newPair;
+    }
+
+    if (root->right == NULL && root->left == NULL) {
+        newPair.head = newPair.tail = root;
+        return newPair;
+    }
+
+    else if (root->left == NULL && root->right != NULL) {
+        Pair ll_r = bst2ll(root->right);
+        root->right = ll_r.head;
+        newPair.head = root;
+        newPair.tail = ll_r.tail;
+
+        return newPair;
+    }
+
+    else if (root->left != NULL && root->right == NULL) {
+        Pair ll_l = bst2ll(root->left);
+        newPair.head = ll_l.head;
+        ll_l.tail->right = root;
+        newPair.tail = root;
+
+        return newPair;
+    }
+
+    else {
+        Pair ll_l = bst2ll(root->left);
+        Pair ll_r = bst2ll(root->right);
+
+        ll_l.tail->right = root;
+        root->right = ll_r.head;
+
+        newPair.head = ll_l.head;
+        newPair.tail = ll_r.tail;
+
+        return newPair;
+    }
+}
+
 int main(void) {
-    Node* root = NULL;
+    Node* root1 = NULL;
     int arr[] = {8,10,3,5,6,11,9,7,1,13,15,4};
 
     for (int num: arr) {
-        root = insertIntoBST(num, root);
+        root1 = insertIntoBST(num, root1);
     }
-    printBST(root);
+    printBST(root1);
     cout << endl;
 
-    if (search(12, root)) {
+    if (search(12, root1)) {
         cout << "found" << endl;
     }
     else {
@@ -124,11 +176,19 @@ int main(void) {
 
     vector<int> arrv = {8,10,3,5,6,11,9,7,1,13,15,4,12};
     sort(begin(arrv), end(arrv));
-    root = minHeight(arrv, 0, arrv.size() - 1);
-    printBST(root);
+    Node* root2 = minHeight(arrv, 0, arrv.size() - 1);
+    printBST(root2);
     cout << endl;
 
-    cout << closest(root, 0) << endl;;
+    cout << closest(root2, 0) << endl;
+
+    Pair p = bst2ll(root1);
+    Node* temp = p.head;
+    while (temp != NULL) {
+        cout << temp->data;
+        cout << " ";
+        temp = temp->right;
+    }
 
     return 0;
 }
