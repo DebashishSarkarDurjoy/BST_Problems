@@ -39,6 +39,26 @@ void printBST(Node* root) {
 
 }
 
+bool search(int num, Node* root) {
+    bool found = false;
+
+    if (root == NULL) {
+        return false;
+    }
+
+    if (root->data > num) {
+        found = search(num, root->left);
+    }
+    else if (root->data < num) {
+        found = search(num, root->right);
+    }
+    else {
+        return true;
+    }
+
+    return found;
+}
+
 int main(void) {
     Node* root = NULL;
     int arr[] = {8,10,3,5,6,11,9,7,1,13,15,4};
@@ -48,6 +68,13 @@ int main(void) {
     }
     printBST(root);
     cout << endl;
+
+    if (search(12, root)) {
+        cout << "found" << endl;
+    }
+    else {
+        cout << "not found" << endl;
+    }
 
     return 0;
 }
