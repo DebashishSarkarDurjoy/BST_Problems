@@ -74,6 +74,36 @@ Node* minHeight(vector<int> arrv, int start, int end) {
     return newNode;
 }
 
+int closest(Node* root, int target) {
+    int closest;
+    int diff = INT_MAX;
+
+    Node* temp = root;
+
+    while (temp != NULL) {
+        int current_diff = abs(temp->data - target);
+
+        if (current_diff == 0) {
+            return temp->data;
+        }
+
+        if (current_diff < diff) {
+            diff = current_diff;
+            closest = temp->data;
+        }
+
+        if (temp->data > target) {
+            temp = temp->left;
+        }
+        else {
+            temp = temp->right;
+        }
+    }
+
+
+    return closest;
+}
+
 int main(void) {
     Node* root = NULL;
     int arr[] = {8,10,3,5,6,11,9,7,1,13,15,4};
@@ -97,6 +127,8 @@ int main(void) {
     root = minHeight(arrv, 0, arrv.size() - 1);
     printBST(root);
     cout << endl;
+
+    cout << closest(root, 0) << endl;;
 
     return 0;
 }
