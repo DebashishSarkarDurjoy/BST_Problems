@@ -1,4 +1,6 @@
 #include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 class Node {
@@ -59,6 +61,19 @@ bool search(int num, Node* root) {
     return found;
 }
 
+Node* minHeight(vector<int> arrv, int start, int end) {
+    if (start > end) {
+        return NULL;
+    }
+
+    int mid = (start + end) / 2;
+    Node* newNode = new Node(arrv[mid]);
+    newNode->left = minHeight(arrv, start, mid-1);
+    newNode->right = minHeight(arrv, mid+1, end);
+
+    return newNode;
+}
+
 int main(void) {
     Node* root = NULL;
     int arr[] = {8,10,3,5,6,11,9,7,1,13,15,4};
@@ -75,6 +90,13 @@ int main(void) {
     else {
         cout << "not found" << endl;
     }
+
+
+    vector<int> arrv = {8,10,3,5,6,11,9,7,1,13,15,4,12};
+    sort(begin(arrv), end(arrv));
+    root = minHeight(arrv, 0, arrv.size() - 1);
+    printBST(root);
+    cout << endl;
 
     return 0;
 }
