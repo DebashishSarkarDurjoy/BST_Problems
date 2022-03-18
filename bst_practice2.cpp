@@ -15,16 +15,16 @@ public:
     }
 };
 
-Node* insertIntoBST(int data, Node* root) {
+Node* insertIntoBST(Node* root, int data) {
     if (root == NULL) {
         return new Node(data);
     }
 
     if (root->data > data) {
-        root->left = insertIntoBST(data, root->left);
+        root->left = insertIntoBST(root->left, data);
     }
     else {
-        root->right = insertIntoBST(data, root->right);
+        root->right = insertIntoBST(root->right, data);
     }
 
     return root;
@@ -157,14 +157,44 @@ Pair bst2ll(Node* root) {
 
 }
 
+Node* inorderSucc(Node* root, Node* target) {
 
+    // first case: right subtree exists
+    if (target->right != NULL) {
+        Node* temp = target->right;
+        while (temp->left != NULL) {
+            temp = temp->left;
+        }
+        return temp;
+    }
+
+    // second case: right subtree does not exist
+    else {
+        Node* temp = root;
+        Node* succ = NULL;
+
+        while (temp != target) {
+            if (temp->data > target->data) {
+                succ = temp;
+                temp = temp->left;
+            }
+            else if (temp->data < target->data) {
+                temp = temp->right;
+            }
+            else {
+                return temp;
+            }
+        }
+        return succ;
+    }
+}
 
 int main(void) {
     Node* root1 = NULL;
     int arr[] = {8,10,3,5,6,11,9,7,1,13,15,4};
 
     for (int num: arr) {
-        root1 = insertIntoBST(num, root1);
+        root1 = insertIntoBST(root1, num);
     }
     printBST(root1);
     cout << endl;
@@ -192,6 +222,26 @@ int main(void) {
         temp = temp->right;
     }
     cout << endl;
+
+
+
+    Node * root3 = NULL;
+	root3 = insertIntoBST(root3,8);
+	root3 = insertIntoBST(root3,3);
+	root3 = insertIntoBST(root3,10);
+	root3 = insertIntoBST(root3,1);
+	root3 = insertIntoBST(root3,6);
+	root3 = insertIntoBST(root3,14);
+	root3 = insertIntoBST(root3,4);
+	root3 = insertIntoBST(root3,7);
+	root3 = insertIntoBST(root3,13);
+
+    //Test our Code
+	Node* t1 = root3->left->right->right;
+	Node* t2 = root3->right;
+
+	cout<<"Inorder succ of 7 is " << inorderSucc(root3,t1)->data <<endl;
+	cout<<"Inorder succ of 10 is " << inorderSucc(root3,t2)->data <<endl;
 
     return 0;
 }
