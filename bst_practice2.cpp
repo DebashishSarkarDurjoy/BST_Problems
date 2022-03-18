@@ -114,30 +114,30 @@ Pair bst2ll(Node* root) {
     Pair newPair;
 
     if (root == NULL) {
-        newPair.head = NULL;
-        newPair.tail = NULL;
+        newPair.head = newPair.tail = NULL;
         return newPair;
     }
 
-    if (root->right == NULL && root->left == NULL) {
-        newPair.head = newPair.tail = root;
+    if (root->left == NULL && root->right == NULL) {
+        newPair.head = root;
+        newPair.tail = root;
         return newPair;
     }
 
-    else if (root->left == NULL && root->right != NULL) {
+    else if(root->left != NULL && root->right == NULL) {
+        Pair ll_l = bst2ll(root->left);
+        ll_l.tail->right = root;
+        newPair.head = ll_l.head;
+        newPair.tail = root;
+
+        return newPair;
+    }
+
+    else if(root->left == NULL && root->right != NULL) {
         Pair ll_r = bst2ll(root->right);
         root->right = ll_r.head;
         newPair.head = root;
         newPair.tail = ll_r.tail;
-
-        return newPair;
-    }
-
-    else if (root->left != NULL && root->right == NULL) {
-        Pair ll_l = bst2ll(root->left);
-        newPair.head = ll_l.head;
-        ll_l.tail->right = root;
-        newPair.tail = root;
 
         return newPair;
     }
@@ -154,7 +154,10 @@ Pair bst2ll(Node* root) {
 
         return newPair;
     }
+
 }
+
+
 
 int main(void) {
     Node* root1 = NULL;
@@ -182,13 +185,13 @@ int main(void) {
 
     cout << closest(root2, 0) << endl;
 
-    Pair p = bst2ll(root1);
+    Pair p = bst2ll(root2);
     Node* temp = p.head;
     while (temp != NULL) {
-        cout << temp->data;
-        cout << " ";
+        cout << temp->data << " ";
         temp = temp->right;
     }
+    cout << endl;
 
     return 0;
 }
